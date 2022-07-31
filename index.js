@@ -25,6 +25,7 @@ const typeDefs = gql`
       XAmzCredential: String
       Policy: String
       XAmzSignature: String
+      XAmzSecurityToken: String
     }
 
 
@@ -48,6 +49,7 @@ const resolvers = {
       const s3 = new aws.S3({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        sessionToken: process.env.AWS_SESSION_TOKEN,
         region: process.env.AWS_BUCKET_REGION
       });
 
@@ -68,7 +70,8 @@ const resolvers = {
         'X-Amz-Credential',
         'X-Amz-Algorithm',
         'Content-Type',
-        'X-Amz-Signature'
+        'X-Amz-Signature',
+        'X-Amz-Security-Token'
       ];
       hyphenatedFields.forEach((key) => {presignedPostData.fields[key.replace(/-/g, '')] = presignedPostData.fields[key]})
 
